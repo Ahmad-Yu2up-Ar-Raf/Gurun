@@ -13,6 +13,7 @@ import { useSignIn } from '@clerk/clerk-expo';
 import { router } from 'expo-router';
 import * as React from 'react';
 import { TextInput, View } from 'react-native';
+import AuthLayout from '../../layout/auth-layout';
 
 export function ResetPasswordForm() {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -55,44 +56,51 @@ export function ResetPasswordForm() {
   }
 
   return (
-    <>
-      <View className="gap-6">
-        <View className="gap-1.5">
-          <View className="flex-row items-center">
-            <Label htmlFor="password">New password</Label>
-          </View>
-          <Input
-            id="password"
-            secureTextEntry
-            onChangeText={setPassword}
-            returnKeyType="next"
-            submitBehavior="submit"
-            onSubmitEditing={onPasswordSubmitEditing}
-          />
-          {error.password ? (
-            <Text className="text-sm font-medium text-destructive">{error.password}</Text>
-          ) : null}
+    <AuthLayout
+      onPress={onSubmit}
+      textButton="Reset"
+      signInGoogleButton={false}
+      title="Reset your password"
+      className="mb-4"
+      description="Enter your new password to reset it">
+      <View className="gap-1.5">
+        <View className="flex-row items-center">
+          <Label htmlFor="password" className="sr-only">
+            New password
+          </Label>
         </View>
-        <View className="gap-1.5">
-          <Label htmlFor="code">Verification code</Label>
-          <Input
-            id="code"
-            autoCapitalize="none"
-            onChangeText={setCode}
-            returnKeyType="send"
-            keyboardType="numeric"
-            autoComplete="sms-otp"
-            textContentType="oneTimeCode"
-            onSubmitEditing={onSubmit}
-          />
-          {error.code ? (
-            <Text className="text-sm font-medium text-destructive">{error.code}</Text>
-          ) : null}
-        </View>
-        <Button className="w-full" onPress={onSubmit}>
-          <Text>Reset Password</Text>
-        </Button>
+        <Input
+          id="password"
+          secureTextEntry
+          placeholder="New password"
+          onChangeText={setPassword}
+          returnKeyType="next"
+          submitBehavior="submit"
+          onSubmitEditing={onPasswordSubmitEditing}
+        />
+        {error.password ? (
+          <Text className="text-sm font-medium text-destructive">{error.password}</Text>
+        ) : null}
       </View>
-    </>
+      <View className="gap-1.5">
+        <Label htmlFor="code" className="sr-only">
+          Verification code
+        </Label>
+        <Input
+          placeholder="Verify Code"
+          id="code"
+          autoCapitalize="none"
+          onChangeText={setCode}
+          returnKeyType="send"
+          keyboardType="numeric"
+          autoComplete="sms-otp"
+          textContentType="oneTimeCode"
+          onSubmitEditing={onSubmit}
+        />
+        {error.code ? (
+          <Text className="text-sm font-medium text-destructive">{error.code}</Text>
+        ) : null}
+      </View>
+    </AuthLayout>
   );
 }

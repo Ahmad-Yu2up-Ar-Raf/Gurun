@@ -13,6 +13,7 @@ import { useSignUp } from '@clerk/clerk-expo';
 import { router, useLocalSearchParams } from 'expo-router';
 import * as React from 'react';
 import { type TextStyle, View } from 'react-native';
+import AuthLayout from '../../layout/auth-layout';
 
 const RESEND_CODE_INTERVAL_SECONDS = 30;
 
@@ -71,42 +72,40 @@ export function VerifyEmailForm() {
   }
 
   return (
-    <>
-      <View className="gap-6">
-        <View className="gap-1.5">
-          <Label htmlFor="code">Verification code</Label>
-          <Input
-            id="code"
-            autoCapitalize="none"
-            onChangeText={setCode}
-            returnKeyType="send"
-            keyboardType="numeric"
-            autoComplete="sms-otp"
-            textContentType="oneTimeCode"
-            onSubmitEditing={onSubmit}
-          />
-          {!error ? null : <Text className="text-sm font-medium text-destructive">{error}</Text>}
-          <Button variant="link" size="sm" disabled={countdown > 0} onPress={onResendCode}>
-            <Text className="text-center text-xs">
-              Didn&apos;t receive the code? Resend{' '}
-              {countdown > 0 ? (
-                <Text className="text-xs" style={TABULAR_NUMBERS_STYLE}>
-                  ({countdown})
-                </Text>
-              ) : null}
-            </Text>
-          </Button>
-        </View>
-        <View className="gap-3">
-          <Button className="w-full" onPress={onSubmit}>
-            <Text>Continue</Text>
-          </Button>
-          <Button variant="link" className="mx-auto" onPress={router.back}>
-            <Text>Cancel</Text>
-          </Button>
-        </View>
+    <AuthLayout
+      onPress={onSubmit}
+      textButton="Verifikasi"
+      signInGoogleButton={false}
+      title="Verifikasi Email Anda"
+      description="Masukkan kode yang telah kami kirim ke email Anda">
+      <View className="gap-1.5">
+        <Label htmlFor="code" className="sr-only">
+          Verification code
+        </Label>
+        <Input
+          id="code"
+          placeholder="Verify Code"
+          autoCapitalize="none"
+          onChangeText={setCode}
+          returnKeyType="send"
+          keyboardType="numeric"
+          autoComplete="sms-otp"
+          textContentType="oneTimeCode"
+          onSubmitEditing={onSubmit}
+        />
+        {!error ? null : <Text className="text-sm font-medium text-destructive">{error}</Text>}
+        <Button variant="link" size="sm" disabled={countdown > 0} onPress={onResendCode}>
+          <Text className="text-center text-xs">
+            Didn&apos;t receive the code? Resend{' '}
+            {countdown > 0 ? (
+              <Text className="text-xs" style={TABULAR_NUMBERS_STYLE}>
+                ({countdown})
+              </Text>
+            ) : null}
+          </Text>
+        </Button>
       </View>
-    </>
+    </AuthLayout>
   );
 }
 

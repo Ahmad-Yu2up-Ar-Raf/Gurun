@@ -5,11 +5,8 @@ import { ScrollView, View } from 'react-native';
 
 export default function ForgotPasswordScreen() {
   return (
-    <AuthLayout
-      signInGoogleButton={false}
-      title="Forgot your password?"
-      description="Enter your email to reset your password">
+
       <ForgotPasswordForm />
-    </AuthLayout>
+ 
   );
 }

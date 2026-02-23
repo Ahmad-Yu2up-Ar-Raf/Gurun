@@ -5,12 +5,8 @@ import { ScrollView, View } from 'react-native';
 
 export default function SignUpScreen() {
   return (
-    <AuthLayout
- 
-      formType="register"
-      title="Buat Akun Baru"
-      description="Mari berkenalan dengan kami!">
+  
       <SignUpForm />
-    </AuthLayout>
+ 
   );
 }

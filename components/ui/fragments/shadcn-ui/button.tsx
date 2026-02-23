@@ -2,6 +2,7 @@ import { TextClassContext } from '@/components/ui/fragments/shadcn-ui/text';
 import { cn } from '@/lib/utils';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { Platform, Pressable } from 'react-native';
+import * as Haptics from 'expo-haptics';
 
 const buttonVariants = cva(
   cn(
@@ -92,7 +93,16 @@ type ButtonProps = React.ComponentProps<typeof Pressable> &
   React.RefAttributes<typeof Pressable> &
   VariantProps<typeof buttonVariants>;
 
-function Button({ className, variant, size, ...props }: ButtonProps) {
+function Button({ className, variant, size, onPress, ...props }: ButtonProps) {
+  // ✅ onPress di-destructure terpisah agar tidak ditimpa oleh spread {...props}
+  // Root cause bug sebelumnya: {...props} di-spread SETELAH custom onPress handler,
+  // sehingga onPress dari props menimpa handler haptics kita.
+  const handlePress = (event: Parameters<NonNullable<typeof onPress>>[0]) => {
+    // Haptics selalu jalan terlepas onPress di-pass atau tidak
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    onPress?.(event);
+  };
+
   return (
     <TextClassContext.Provider value={buttonTextVariants({ variant, size })}>
       <Pressable
@@ -103,12 +113,12 @@ function Button({ className, variant, size, ...props }: ButtonProps) {
         className={cn(
           props.disabled && 'opacity-50',
           buttonVariants({ variant, size }),
-
           className,
-          'font-cinzel_semibold overflow-hidden'
+          'overflow-hidden font-cinzel_semibold'
         )}
         role="button"
-        {...props}
+        onPress={handlePress}
+        {...props} // ✅ Aman karena onPress sudah di-destructure, tidak ada di dalam props
       />
     </TextClassContext.Provider>
   );

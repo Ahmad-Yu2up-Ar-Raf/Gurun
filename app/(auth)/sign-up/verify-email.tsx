@@ -4,11 +4,8 @@ import { ScrollView, View } from 'react-native';
 
 export default function VerifyEmailScreen() {
   return (
-    <AuthLayout
-      signInGoogleButton={false}
-      title="Verifikasi Email Anda"
-      description="Masukkan kode yang telah kami kirim ke email Anda">
+  
       <VerifyEmailForm />
-    </AuthLayout>
+  
   );
 }

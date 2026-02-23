@@ -2,13 +2,14 @@ import { Button } from '@/components/ui/fragments/shadcn-ui/button';
 import * as Haptics from 'expo-haptics';
 import { Input } from '@/components/ui/fragments/shadcn-ui/input';
 import { Label } from '@/components/ui/fragments/shadcn-ui/label';
-
 import { Text } from '@/components/ui/fragments/shadcn-ui/text';
-import { Checkbox } from '@/components/ui/fragments/shadcn/checkbox';
+import { Checkbox } from '@/components/ui/fragments/shadcn-ui/checkbox';
 import { useSignIn } from '@clerk/clerk-expo';
-import { Link, router } from 'expo-router';
+import { Link } from 'expo-router';
 import * as React from 'react';
 import { Platform, type TextInput, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import AuthLayout from '../../layout/auth-layout';
 
 export function SignInForm() {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -70,8 +71,13 @@ export function SignInForm() {
       }));
     };
   }
+  const insets = useSafeAreaInsets();
   return (
-    <>
+    <AuthLayout
+      onPress={onSubmit}
+      title="Selamat Datang!"
+      description="Masuk untuk melanjutkan"
+      formType="login">
       <View className="gap-1.5">
         <Label htmlFor="email" className="sr-only">
           Email
@@ -109,7 +115,7 @@ export function SignInForm() {
           <Text className="text-sm font-medium text-destructive">{error.password}</Text>
         ) : null}
       </View>
-      <View className="m-0 mt-1 h-fit w-full flex-row items-center justify-between px-1">
+      <View className="m-0 mt-2 h-fit w-full flex-row items-center justify-between px-1">
         <View className="flex flex-row items-center gap-3">
           <Checkbox
             id="terms"
@@ -129,9 +135,6 @@ export function SignInForm() {
           </Button>
         </Link>
       </View>
-      <Button className="mt-3 w-full" onPress={onSubmit}>
-        <Text>Masuk</Text>
-      </Button>
-    </>
+    </AuthLayout>
   );
 }

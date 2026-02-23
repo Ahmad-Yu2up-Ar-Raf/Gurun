@@ -14,6 +14,7 @@ import { router } from 'expo-router';
 import { useLocalSearchParams } from 'expo-router/build/hooks';
 import * as React from 'react';
 import { View } from 'react-native';
+import AuthLayout from '../../layout/auth-layout';
 
 export function ForgotPasswordForm() {
   const { email: emailParam = '' } = useLocalSearchParams<{ email?: string }>();
@@ -48,29 +49,31 @@ export function ForgotPasswordForm() {
   };
 
   return (
-    <>
-      <View className="gap-6">
-        <View className="gap-1.5">
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            defaultValue={email}
-            placeholder="m@example.com"
-            keyboardType="email-address"
-            autoComplete="email"
-            autoCapitalize="none"
-            onChangeText={setEmail}
-            onSubmitEditing={onSubmit}
-            returnKeyType="send"
-          />
-          {error.email ? (
-            <Text className="text-sm font-medium text-destructive">{error.email}</Text>
-          ) : null}
-        </View>
-        <Button className="w-full" onPress={onSubmit}>
-          <Text>Reset your password</Text>
-        </Button>
+    <AuthLayout
+      onPress={onSubmit}
+      textButton="Submit"
+      signInGoogleButton={false}
+      title="Forgot your password?"
+      description="Enter your email to reset your password">
+      <View className="gap-1.5">
+        <Label htmlFor="email" className="sr-only">
+          Email
+        </Label>
+        <Input
+          id="email"
+          defaultValue={email}
+          placeholder="m@example.com"
+          keyboardType="email-address"
+          autoComplete="email"
+          autoCapitalize="none"
+          onChangeText={setEmail}
+          onSubmitEditing={onSubmit}
+          returnKeyType="send"
+        />
+        {error.email ? (
+          <Text className="text-sm font-medium text-destructive">{error.email}</Text>
+        ) : null}
       </View>
-    </>
+    </AuthLayout>
   );
 }

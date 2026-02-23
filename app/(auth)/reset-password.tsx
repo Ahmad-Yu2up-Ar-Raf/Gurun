@@ -5,12 +5,8 @@ import { ScrollView, View } from 'react-native';
 
 export default function ResetPasswordScreen() {
   return (
-    <AuthLayout
-      signInGoogleButton={false}
-      title="Reset your password"
-      className="mb-4"
-      description="Enter your new password to reset it">
+  
       <ResetPasswordForm />
-    </AuthLayout>
+ 
   );
 }

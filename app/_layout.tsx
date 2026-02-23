@@ -16,6 +16,7 @@ import { Cinzel_500Medium } from '@expo-google-fonts/cinzel/500Medium';
 import { Cinzel_600SemiBold } from '@expo-google-fonts/cinzel/600SemiBold';
 import { Cinzel_700Bold } from '@expo-google-fonts/cinzel/700Bold';
 import { Cinzel_800ExtraBold } from '@expo-google-fonts/cinzel/800ExtraBold';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Cinzel_900Black } from '@expo-google-fonts/cinzel/900Black';
 export {
   // Catch any errors thrown by the Layout component.
@@ -28,9 +29,11 @@ export default function RootLayout() {
   return (
     <ClerkProvider tokenCache={tokenCache}>
       <ThemeProvider value={NAV_THEME[colorScheme ?? 'light']}>
-        <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-        <Routes />
-        <PortalHost />
+        <GestureHandlerRootView>
+          <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+          <Routes />
+          <PortalHost />
+        </GestureHandlerRootView>
       </ThemeProvider>
     </ClerkProvider>
   );
@@ -63,7 +66,9 @@ function Routes() {
     <Stack>
       {/* Screens only shown when the user is NOT signed in */}
       <Stack.Protected guard={!isSignedIn}>
-        <Stack.Screen name="welcome" options={SIGN_IN_SCREEN_OPTIONS} />
+        <Stack.Screen name="onboarding" options={{ headerShown: false }} />
+
+        <Stack.Screen name="(auth)/welcome" options={SIGN_IN_SCREEN_OPTIONS} />
         <Stack.Screen name="(auth)/sign-in" options={SIGN_IN_SCREEN_OPTIONS} />
         <Stack.Screen name="(auth)/sign-up" options={SIGN_UP_SCREEN_OPTIONS} />
         <Stack.Screen name="(auth)/reset-password" options={DEFAULT_AUTH_SCREEN_OPTIONS} />

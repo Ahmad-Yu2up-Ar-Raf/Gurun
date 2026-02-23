@@ -1,14 +1,14 @@
- 
 import { Button } from '@/components/ui/fragments/shadcn-ui/button';
- 
+
 import { Input } from '@/components/ui/fragments/shadcn-ui/input';
 import { Label } from '@/components/ui/fragments/shadcn-ui/label';
- 
+
 import { Text } from '@/components/ui/fragments/shadcn-ui/text';
 import { useSignUp } from '@clerk/clerk-expo';
 import { Link, router } from 'expo-router';
 import * as React from 'react';
 import { TextInput, View } from 'react-native';
+import AuthLayout from '../../layout/auth-layout';
 
 export function SignUpForm() {
   const { signUp, isLoaded } = useSignUp();
@@ -49,7 +49,12 @@ export function SignUpForm() {
   }
 
   return (
-    <>
+    <AuthLayout
+      onPress={onSubmit}
+      textButton="Daftar"
+      formType="register"
+      title="Buat Akun Baru"
+      description="Mari berkenalan dengan kami!">
       <View className="gap-1.5">
         <Label htmlFor="email" className="sr-only">
           Email
@@ -87,10 +92,6 @@ export function SignUpForm() {
           <Text className="text-sm font-medium text-destructive">{error.password}</Text>
         ) : null}
       </View>
-
-      <Button className="mt-3 w-full" onPress={onSubmit}>
-        <Text>Daftar</Text>
-      </Button>
-    </>
+    </AuthLayout>
   );
 }

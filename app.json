@@ -1,17 +1,16 @@
 {
   "expo": {
     "name": " ",
-    "slug": "saraya",
+    "slug": " ",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/splash.svg",
     "scheme": "saraya",
+
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#dc2626"
+      "image": "./assets/images/splash.svg"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
@@ -20,14 +19,14 @@
     "android": {
       "edgeToEdgeEnabled": true,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/logo.svg",
         "backgroundColor": "#dc2626"
       }
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/logo.svg"
     },
     "plugins": ["expo-router", "expo-secure-store", "expo-web-browser"],
     "experiments": {
