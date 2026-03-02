@@ -25,7 +25,7 @@ export function Wrapper({
   edges = ['top', 'bottom'],
 }: WrapperProps) {
   return (
-    <SafeAreaView edges={edges} className={cn("flex-1", containerClassName)}>
+    <SafeAreaView edges={edges} className={cn('flex-1', containerClassName)}>
       <Animated.ScrollView
         ref={scrollRef}
         onScroll={onScroll}
@@ -33,7 +33,7 @@ export function Wrapper({
         scrollEventThrottle={16}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="interactive"
-        contentContainerClassName={cn('flex-col gap-3', className)}
+        contentContainerClassName={cn('flex-col   bg-white gap-3 relative', className)}
         showsVerticalScrollIndicator={false}>
         {children}
       </Animated.ScrollView>

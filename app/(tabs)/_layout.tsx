@@ -17,7 +17,8 @@ export default function TabsLayout() {
   const { colorScheme } = useColorScheme();
   const currentTheme = colorScheme ?? 'light';
   const tintColor = THEME[currentTheme].secondary;
-  const backgroundColor = THEME[currentTheme].background;
+  const backgroundColor = THEME[currentTheme].muted;
+  const mutedForeground = THEME[currentTheme].mutedForeground;
   const inactiveTintColor = THEME[currentTheme].mutedForeground;
 
   const insets = useSafeAreaInsets(); // ✅ Dapetin safe area insets
@@ -29,43 +30,66 @@ export default function TabsLayout() {
           tabBarButton: HapticTab,
 
           tabBarActiveTintColor: tintColor,
-         
+
           tabBarInactiveTintColor: inactiveTintColor,
           tabBarStyle: {
             backgroundColor,
 
-            height: 80 + insets.bottom, // ✅ CRITICAL: Tinggi + bottom inset
-            paddingTop: 20,
+            height: 70 + insets.bottom, // ✅ CRITICAL: Tinggi + bottom inset
+            paddingTop: 13,
             display: 'flex',
             alignItems: 'center',
 
-            borderTopWidth: 0.01,
-            borderTopColor: THEME[currentTheme].border,
+            borderTopWidth: 0,
+            borderTopColor: THEME[currentTheme].background,
+            shadowColor: mutedForeground,
+            shadowOffset: {
+              width: 2,
+              height: 0,
+            },
+            shadowOpacity: 20.1,
+            shadowRadius: 2.84,
+            elevation: 3,
           },
-          
         }}>
         <Tabs.Screen
           name="index"
           options={{
             title: 'Home',
             tabBarLabel: ({ color, focused }) => (
-              <Text className={cn("text-xs  mt-1.5 ", focused ? 'font-poppins_semibold text-secondary' : " font-poppins_medium  text-muted-foreground ")}>Home</Text>
+              <Text
+                className={cn(
+                  'mt-1.5 text-xs',
+                  focused
+                    ? 'font-poppins_semibold text-secondary'
+                    : 'font-poppins_medium text-muted-foreground'
+                )}>
+                Home
+              </Text>
             ),
             tabBarButton: HapticTab,
-             tabBarIcon: ({ color, focused }) => (
+            tabBarIcon: ({ color, focused }) => (
               <View className="scale-1">
                 <HomeIcon fill={color} />
               </View>
             ),
           }}
         />
-    
+
         <Tabs.Screen
           name="quran"
           options={{
             title: 'Quran',
-      tabBarLabel: ({ color, focused }) => (
-              <Text className={cn("text-xs  mt-1.5 ", focused ? 'font-poppins_semibold text-secondary' : " font-poppins_medium  text-muted-foreground ")}>Quran</Text>
+            tabBarLabel: ({ color, focused }) => (
+              <Text
+                className={cn(
+                  'mt-1.5 text-xs',
+                  focused
+                    ? 'font-poppins_semibold text-secondary'
+                    : 'font-poppins_medium text-muted-foreground'
+                )}>
+                Quran
+              </Text>
             ),
             tabBarButton: HapticTab,
             tabBarIcon: ({ color, focused }) => (
@@ -75,13 +99,20 @@ export default function TabsLayout() {
             ),
           }}
         />
-            <Tabs.Screen
+        <Tabs.Screen
           name="qibla"
           options={{
-            
             title: 'Qibla',
-             tabBarLabel: ({ color, focused }) => (
-              <Text className={cn("text-xs  mt-1.5 ", focused ? 'font-poppins_semibold text-secondary' : " font-poppins_medium text-muted-foreground ")}>Qibla</Text>
+            tabBarLabel: ({ color, focused }) => (
+              <Text
+                className={cn(
+                  'mt-1.5 text-xs',
+                  focused
+                    ? 'font-poppins_semibold text-secondary'
+                    : 'font-poppins_medium text-muted-foreground'
+                )}>
+                Qibla
+              </Text>
             ),
             tabBarIcon: ({ color, focused }) => <KabbahIcon fill={color} />,
           }}
@@ -90,8 +121,16 @@ export default function TabsLayout() {
           name="settings"
           options={{
             title: 'Settings',
-             tabBarLabel: ({ color, focused }) => (
-              <Text className={cn("text-xs  mt-1.5 ", focused ? 'font-poppins_semibold text-secondary' : " font-poppins_medium  text-muted-foreground ")}>Settings</Text>
+            tabBarLabel: ({ color, focused }) => (
+              <Text
+                className={cn(
+                  'mt-1.5 text-xs',
+                  focused
+                    ? 'font-poppins_semibold text-secondary'
+                    : 'font-poppins_medium text-muted-foreground'
+                )}>
+                Settings
+              </Text>
             ),
             tabBarIcon: ({ color, focused }) => (
               <View className="mb-1 size-full p-0.5">
