@@ -1,11 +1,11 @@
 // app/surah/[id].tsx
-// ✅ FIXED: Header konsisten dari awal — tidak bergantung data load
+// ✅ Simple and clean: no Provider wrapper needed
 import React from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import SurahBlock from '@/components/ui/core/block/surah-block';
 import { ChevronLeft, MoreHorizontal, PlayCircleIcon } from 'lucide-react-native';
-import { SCREEN_OPTIONS } from '@/components/ui/core/layout/header';
+import { SCREEN_OPTIONS } from '@/components/ui/core/layout/nav';
 
 export default function Page() {
   const params = useLocalSearchParams<{ id?: string; name?: string }>();
@@ -32,13 +32,11 @@ export default function Page() {
   }
 
   /*
-    ✅ SurahBlock sekarang yang handle Stack.Screen headernya sendiri
-    karena di dalam SurahBlock, hooks sudah di top level dan
-    header diupdate setelah data loaded (nama latin dari API)
-
-    Tidak perlu Stack.Screen di sini lagi untuk kasus valid nomor —
-    SurahBlock yang handle semua state (loading, error, success)
-    masing-masing dengan header yang sesuai.
+    ✅ SurahBlock handles scroll animation internally
+    useScrollAnimation hook tracks scroll position automatically
+    Pass scrollAnimatedPosition to SCREEN_OPTIONS, attach handler to LegendList
+    
+    No Provider wrapper needed — simple and reusable pattern!
   */
   return <SurahBlock id={nomor} nameSurah={nameSurah} />;
 }

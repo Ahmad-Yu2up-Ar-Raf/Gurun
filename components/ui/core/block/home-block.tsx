@@ -1,6 +1,6 @@
 // components/ui/core/block/home-block.tsx
 
-import { View, useWindowDimensions } from 'react-native';
+import { Dimensions, View, useWindowDimensions } from 'react-native';
 import React from 'react';
 import { Wrapper } from '../layout/wrapper';
 import { StyleSheet } from 'react-native';
@@ -17,9 +17,9 @@ import { THEME } from '@/lib/theme';
 
 import HomeMenuCard from '../../fragments/custom-ui/card/home-menu-card';
 import PrayerScheduleCard from '../../fragments/custom-ui/card/prayer-shcedule-card';
-
-const HERO_HEIGHT = 350;
-
+  const SCREEN_WIDTH = Dimensions.get('window').width;
+ 
+  const HERO_HEIGHT = SCREEN_WIDTH * 0.76;
 export default function HomeBlock() {
   const { nextPrayer, remaining, city, dateString } = usePrayer();
   const currentTime = useCurrentTime();
@@ -28,7 +28,7 @@ export default function HomeBlock() {
   const backgroundColor = THEME[currentTheme].background;
 
   return (
-    <Wrapper edges={['bottom']}>
+    <Wrapper containerClassName="px-0" edges={['bottom']}>
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <View
         style={{ height: HERO_HEIGHT, position: 'relative', overflow: 'visible' }}
@@ -92,12 +92,6 @@ export default function HomeBlock() {
             bottom: -60,
           }}
         />
-      </View>
-
-      {/* ── Sections ─────────────────────────────────────────────────────── */}
-      <View className="gap-6 px-4 pb-10">
-        <HomeMenuCard />
-        <PrayerScheduleCard />
       </View>
     </Wrapper>
   );

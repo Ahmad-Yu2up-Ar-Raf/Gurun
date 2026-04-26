@@ -31,7 +31,7 @@ import { useQuery } from '@tanstack/react-query';
 import { LegendList } from '@legendapp/list';
 
 import { Text } from '../../fragments/shadcn-ui/text';
-import { SCREEN_OPTIONS } from '@/components/ui/core/layout/header';
+import { SCREEN_OPTIONS } from '@/components/ui/core/layout/nav';
 import { DzikirListQueryOptions } from '@/lib/server/dzikir/dzikir-server-queris';
 import { DzikirCard } from '../../fragments/custom-ui/card/dzikir-card';
 import LoadingIndicator from '../loading-indicator';

@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import { LegendList } from '@legendapp/list';
 
 import { Text } from '../../fragments/shadcn-ui/text';
-import { SCREEN_OPTIONS } from '@/components/ui/core/layout/header';
+import { SCREEN_OPTIONS } from '@/components/ui/core/layout/nav';
 import { ArticleListQueryOptions } from '@/lib/server/article/article-server-queris';
 import { ArticleCard } from '../../fragments/custom-ui/card/article-card';
 import LoadingIndicator from '../loading-indicator';

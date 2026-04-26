@@ -1,5 +1,5 @@
 import HomeBlock from '@/components/ui/core/block/home-block';
-import { SCREEN_OPTIONS } from '@/components/ui/core/layout/header';
+import { SCREEN_OPTIONS } from '@/components/ui/core/layout/nav';
 
 import { Link, Stack } from 'expo-router';
 

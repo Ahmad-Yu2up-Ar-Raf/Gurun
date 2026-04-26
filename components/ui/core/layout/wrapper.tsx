@@ -11,8 +11,8 @@ import Animated, {
   type AnimatedScrollViewProps,
   type AnimatedStyle,
 } from 'react-native-reanimated';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { type StyleProp, type ViewStyle } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { KeyboardAvoidingView, type StyleProp, type ViewStyle, Platform } from 'react-native';
 
 type WrapperProps = {
   children: React.ReactNode;
@@ -24,13 +24,19 @@ type WrapperProps = {
   edges?: ('top' | 'bottom' | 'left' | 'right')[];
   /**
    * Animated style untuk Animated.ScrollView itu sendiri (bukan contentContainer)
-   * Dipakai oleh chat-block untuk animasi paddingBottom mengikuti keyboard
+   * Dipakai oleh chat-block yang harus animasi paddingBottom ikut keyboard
    */
   scrollViewStyle?: AnimatedStyle<StyleProp<ViewStyle>>;
   /**
    * Non-animated inline style tambahan untuk contentContainer
    */
   contentContainerStyle?: StyleProp<ViewStyle>;
+  /**
+   * ✅ NEW: Animated scroll handler untuk scroll trigger animations
+   * Prefer menggunakan ini daripada `onScroll` untuk performance
+   * Runs di UI thread, smooth 60fps
+   */
+  animatedScrollHandler?: AnimatedScrollViewProps['onScroll'];
 };
 
 export function Wrapper({
@@ -39,26 +45,34 @@ export function Wrapper({
   onScroll,
   className,
   containerClassName,
-  edges = ['bottom'],
+  edges = ['bottom', 'right', 'left', 'top'],
   scrollViewStyle,
   contentContainerStyle,
+  animatedScrollHandler,
 }: WrapperProps) {
+  const insets = useSafeAreaInsets();
+
   return (
-    <SafeAreaView edges={edges} className={cn('flex flex-1', containerClassName)}>
-      <Animated.ScrollView
-        ref={scrollRef}
-        onScroll={onScroll}
-        scrollEventThrottle={16}
-        keyboardShouldPersistTaps="handled"
-        keyboardDismissMode="interactive"
-        contentContainerClassName={cn('flex-col bg-background gap-3 relative', className)}
-        contentContainerStyle={contentContainerStyle}
-        showsVerticalScrollIndicator={false}
-        // ✅ NEW: animated style untuk ScrollView container (bukan contentContainer)
-        // Dipakai saat parent butuh animasi height/padding mengikuti keyboard
-        style={scrollViewStyle}>
-        {children}
-      </Animated.ScrollView>
-    </SafeAreaView>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? insets.top + 60 : 0}>
+      <SafeAreaView edges={edges} className={cn('flex flex-1 px-10', containerClassName)}>
+        <Animated.ScrollView
+          ref={scrollRef}
+          onScroll={animatedScrollHandler ?? onScroll}
+          scrollEventThrottle={16}
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="interactive"
+          contentContainerClassName={cn('flex-col pt-0  bg-background gap-3 relative', className)}
+          contentContainerStyle={contentContainerStyle}
+          showsVerticalScrollIndicator={false}
+          // ✅ animated style untuk ScrollView container (bukan contentContainer)
+          // Dipakai saat parent butuh animasi height/padding mengikuti keyboard
+          style={scrollViewStyle}>
+          {children}
+        </Animated.ScrollView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 }

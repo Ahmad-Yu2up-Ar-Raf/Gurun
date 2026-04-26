@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Stack } from 'expo-router';
-import { SCREEN_OPTIONS } from '@/components/ui/core/layout/header';
+import { SCREEN_OPTIONS } from '@/components/ui/core/layout/nav';
 
 export default function HomeLayout() {
   return (

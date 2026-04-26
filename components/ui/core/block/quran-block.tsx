@@ -13,12 +13,11 @@ import LoadingIndicator from '../loading-indicator';
 export default function QuranBlock() {
   const { data, isLoading, isError, refetch, isRefetching } = useQuery(surahListQueryOptions());
 
-  // ✅ Loading state — tampilkan skeleton, bukan blank screen
+  
   if (isLoading) {
     return <LoadingIndicator />;
   }
-
-  // ✅ Error state dengan tombol retry
+ 
   if (isError) {
     return (
       <View style={styles.center}>

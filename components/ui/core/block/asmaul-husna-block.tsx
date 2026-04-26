@@ -5,7 +5,7 @@ import { RefreshControl, View, StyleSheet } from 'react-native';
 import { Text } from '../../fragments/shadcn-ui/text';
 import { AsmaulHusnaListQueryOptions } from '@/lib/server/asmaul_husna/asmaul-husna-server-queris';
 import { useQuery } from '@tanstack/react-query';
-import { SCREEN_OPTIONS } from '@/components/ui/core/layout/header';
+import { SCREEN_OPTIONS } from '@/components/ui/core/layout/nav';
 import { LegendList } from '@legendapp/list';
 import { AsmaulHusnaCard } from '../../fragments/custom-ui/card/asmaul-husna-card';
 // ─── Skeleton item ───

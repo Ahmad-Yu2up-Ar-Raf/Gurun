@@ -1,5 +1,6 @@
 // components/ui/core/block/surah-block.tsx
-// ✅ FIXED: All hooks called at top level — no hooks after early returns
+// ✅ BEST PRACTICE: Self-contained scroll animation
+// Simple hook-based approach, no Provider wrapper needed
 import React from 'react';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import { Text } from '../../fragments/shadcn-ui/text';
@@ -9,11 +10,12 @@ import { LegendList } from '@legendapp/list';
 import { AyatCard } from '../../fragments/custom-ui/card/ayat-card';
 import { SurahDetailCard } from '../../fragments/custom-ui/card/detail-surah-card';
 import { ChevronLeft, PauseCircleIcon, PlayCircleIcon } from 'lucide-react-native';
-import { SCREEN_OPTIONS_DETAIL } from '../layout/header';
+import { SCREEN_OPTIONS } from '../layout/nav';
 import { router, Stack } from 'expo-router';
 import { useGlobalAudio } from '@/components/provider/AudioProvider';
 import { useLastRead } from '@/components/provider/LastReadProvider';
 import LoadingIndicator from '../loading-indicator';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 type Props = {
   id: number;
@@ -25,7 +27,14 @@ export default function SurahBlock({ id, nameSurah }: Props) {
   const query = useQuery(surahDetailQueryOptions(id));
   const { setLastRead } = useLastRead();
   const { play, stop, currentId, isPlaying } = useGlobalAudio();
-
+  
+  // ✅ Simple hook untuk scroll animation — no Provider needed
+  // Trigger at 80px untuk header title fade-in
+  const { scrollAnimatedPosition, scrollHandler } = useScrollAnimation({
+    showTriggerPoint: 80,
+    hideTriggerPoint: 0,
+  });
+  
   // ─── Derived values (tidak perlu hooks) ───
   const { data, isLoading, isError, error } = query;
   const fullAudioId = `surah-full-${id}`;
@@ -49,7 +58,6 @@ export default function SurahBlock({ id, nameSurah }: Props) {
     router.push('/(drawer)/(tabs)/quran');
   };
 
-  // ─── Render states ───
   if (isLoading) {
     return <LoadingIndicator loadingText="Memuat data surah..." />;
   }
@@ -58,7 +66,7 @@ export default function SurahBlock({ id, nameSurah }: Props) {
     return (
       <>
         <Stack.Screen
-          options={SCREEN_OPTIONS_DETAIL({
+          options={SCREEN_OPTIONS({
             title: nameSurah,
             rightAction: handleFullPlay,
             leftAction: handleLeave,
@@ -76,7 +84,7 @@ export default function SurahBlock({ id, nameSurah }: Props) {
   return (
     <>
       <Stack.Screen
-        options={SCREEN_OPTIONS_DETAIL({
+        options={SCREEN_OPTIONS({
           title: data.namaLatin ?? nameSurah,
           id: id,
           leftAction: handleLeave,
@@ -87,6 +95,8 @@ export default function SurahBlock({ id, nameSurah }: Props) {
             namaLatin: data.suratSelanjutnya.namaLatin,
             id: data.suratSelanjutnya.nomor,
           },
+          scrollAnimatedPosition,
+          scrollTriggerPoint: 80,
           surahSebelumnya: {
             namaLatin: data.suratSebelumnya.namaLatin,
             id: data.suratSebelumnya.nomor,
@@ -101,6 +111,10 @@ export default function SurahBlock({ id, nameSurah }: Props) {
         keyExtractor={(item) => `ayat-${item.nomorAyat}`}
         numColumns={1}
         onEndReachedThreshold={1.5}
+        // ✅ ATTACH SCROLL HANDLER — Reanimated event handler for smooth animation
+        // Compatible with LegendList, FlatList, ScrollView, any scrollable component
+        onScroll={scrollHandler}
+        scrollEventThrottle={16}
         ListHeaderComponent={
           <SurahDetailCard
             kategori={data.tempatTurun}
